@@ -1,9 +1,6 @@
 """Modulo Principal do Projeto."""
 from flask import Flask
-from flaskext.mysql import MySQL
-
-
-mysql = MySQL()
+from .models import configure as config_db
 
 
 def start_app():
@@ -12,7 +9,8 @@ def start_app():
 
     app.config.from_object("app.config.development")
 
-    mysql.init_app(app)
+    config_db(app)
+
     from .controllers import index
     app.register_blueprint(index)
 

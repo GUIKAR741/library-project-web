@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pep8 = "*"
+pydocstyle = "*"
+autopep8 = "*"
+pylint = "*"
+pycodestyle = "*"
+tox = "*"
+
+[packages]
+flask = "*"
+flask-mysql = "*"
+
+[requires]
+python_version = "3.7"

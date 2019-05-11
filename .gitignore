@@ -183,6 +183,7 @@ dmypy.json
 # mkdocs documentation
 
 # mypy
+mutpy_report/
 
 # Pyre type checker
 

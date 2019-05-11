@@ -9,7 +9,7 @@ class Config:
     MYSQL_DATABASE_USER = 'guilherme'
     MYSQL_DATABASE_PASSWORD = 'qwe123'
     MYSQL_DATABASE_DB = 'sim'
-    # MYSQL_DATABASE_CHARSET = 'utf-8'
+    MYSQL_DATABASE_CHARSET = 'utf8'
 
 
 class development(Config):

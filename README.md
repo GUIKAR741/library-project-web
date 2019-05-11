@@ -10,7 +10,8 @@ Site Biblioteca
 ### Instale as dependencias com o comando
 
 ```sh
-pip install -r requirements.txt 
+pip install pipenv
+pipenv install --dev
 ```
 
 ### Execute o projeto
@@ -25,4 +26,9 @@ flask run
 ou
 ```sh
 ./run.sh
+```
+
+## Como rodar os testes
+```sh
+tox
 ```
