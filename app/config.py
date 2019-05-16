@@ -8,7 +8,7 @@ class Config:
     MYSQL_DATABASE_PORT = 3306
     MYSQL_DATABASE_USER = 'guilherme'
     MYSQL_DATABASE_PASSWORD = 'qwe123'
-    MYSQL_DATABASE_DB = 'sim'
+    MYSQL_DATABASE_DB = 'biblioteca'
     MYSQL_DATABASE_CHARSET = 'utf8'
 
 

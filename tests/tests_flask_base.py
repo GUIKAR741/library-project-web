@@ -1,10 +1,10 @@
-"""."""
+"""Modulo para preparar o ambiente dos Testes."""
 from app import start_app
 from unittest import TestCase
 
 
 class TestFlaskBase(TestCase):
-    """."""
+    """Classe Base com as Configurações dos Testes."""
 
     def setUp(self):
         """Roda antes de todos os testes."""

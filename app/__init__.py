@@ -3,7 +3,7 @@ from flask import Flask
 from .models import configure as config_db
 
 
-def start_app():
+def start_app() -> Flask:
     """Inicia o App."""
     app = Flask(__name__)
 

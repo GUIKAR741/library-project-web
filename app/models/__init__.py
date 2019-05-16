@@ -1,5 +1,4 @@
 """Model Base do Banco."""
-from flask import current_app
 from flaskext.mysql import MySQL
 
 mysql = MySQL()
@@ -8,7 +7,7 @@ mysql = MySQL()
 def configure(app):
     """."""
     mysql.init_app(app)
-    app.db = mysql
+    app.db = sql
 
 
 class sql:
@@ -20,7 +19,7 @@ class sql:
 
         Abre a Conexão
         """
-        self.conn = current_app.db.connect()
+        self.conn = mysql.connect()
 
     def __del__(self):
         """
@@ -30,19 +29,40 @@ class sql:
         """
         self.conn.close()
 
-    def query(self, sql, campos=None):
+    def _query(self, sql, campos=None):
         """Executa as Querys."""
-        with self.conn() as curr:
-            curr.execute(sql, campos)
-            res = curr
-        return res
+        cursor = self.conn.cursor()
+        cursor.execute(sql, campos)
+        return cursor
 
     def select(self, sql, campos=None, sel='fetchone'):
         """Executa Select no Banco de Dados."""
-        with self.conn.cursor() as curr:
-            curr.execute(sql, campos)
-            if sel == 'fetchone':
-                sel = curr.fetchone()
-            if sel == 'fetchall':
-                sel = curr.fetchall()
+        curr = self._query(sql, campos)
+        if sel == 'fetchone':
+            sel = curr.fetchone()
+        if sel == 'fetchall':
+            sel = curr.fetchall()
         return sel
+
+    def operacao(self, sql, campos=None):
+        """Executa Select no Banco de Dados."""
+        self._query(sql, campos)
+        return self.conn.commit()
+
+
+class Model:
+    """Classe de Model para Interface com o Banco."""
+
+    _lista = {}
+
+    def __getattr__(self, name):
+        """Metodo para pegar valores na lista."""
+        return self._lista[name]
+
+    def __setattr__(self, name, value):
+        """Metodo para colocar valores na lista."""
+        self._lista[name] = value
+
+    def __delattr__(self, name):
+        """Metodo para deletar valores da lista."""
+        del self._lista[name]
