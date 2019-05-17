@@ -16,6 +16,8 @@ mutpy = "*"
 [packages]
 flask = "*"
 flask-mysql = "*"
+flask-restful = "*"
+passlib = "*"
 
 [requires]
 python_version = "3.7"

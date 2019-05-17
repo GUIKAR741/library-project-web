@@ -29,6 +29,24 @@ class TestQuerys(TestFlaskBase):
             'SELECT * FROM mysql.user', None)
         moked().cursor().fetchall.assert_called()
 
+    def test_se_o_select_em_uma_tabela_que_nao_existe_gera_excecao(self):
+        """."""
+        import pymysql
+        with self.assertRaises(pymysql.err.ProgrammingError):
+            self.app.db().select('SELECT * FROM a', None)
+
+    def test_se_o_select_em_uma_tabela_que_existe_falha(self):
+        """."""
+        # with self.assertRaises(pymysql.err.ProgrammingError):
+        self.assertEqual(
+            self.app.db().select('SELECT * FROM usuario', None),
+            None
+            )
+        self.assertEqual(
+            self.app.db().select('SELECT * FROM usuario', None, 'fetchall'),
+            ()
+            )
+
     @patch.object(MySQL, "connect")
     def test_operacao_insert_esta_sendo_chamado_certo(self, moked):
         """."""

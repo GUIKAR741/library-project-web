@@ -1,13 +1,14 @@
 """Controler das paginas iniciais."""
 from flask import Blueprint, render_template
+from ..models.usuario import Usuario
+
 index = Blueprint("index", __name__)
 
 
 @index.route("/")
 def index_route():
     """Rota da pagina indice."""
-    # return render_template('dashboard-modern.html')
-    # res = current_app.db().select("select * from tb_usuario")
+    # print(u.procurarUsuarioPeloEmail('teste'))
     return 'olá'
 
 

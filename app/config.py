@@ -8,7 +8,7 @@ class Config:
     MYSQL_DATABASE_PORT = 3306
     MYSQL_DATABASE_USER = 'guilherme'
     MYSQL_DATABASE_PASSWORD = 'qwe123'
-    MYSQL_DATABASE_DB = 'biblioteca'
+    MYSQL_DATABASE_DB = 'syml'
     MYSQL_DATABASE_CHARSET = 'utf8'
 
 
@@ -16,7 +16,6 @@ class development(Config):
     """Configurações de Desenvolvimento."""
 
     DEBUG = True
-    SQLALCHEMY_ECHO = True
 
 
 class production(Config):
