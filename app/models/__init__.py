@@ -53,75 +53,64 @@ class sql:
         return self.rows
 
 
-class Model:
+class Model(object):
     """Classe de Model para Interface com o Banco."""
-
-    __table__ = None
-    _lista = {}
-    _pk = None
 
     def __init__(self, lista: dict = {}):
         """Metodo Inicializador da Classe."""
-        for i in lista.items():
-            self.__setattr__(i[0], i[1])
-
-    def __getattr__(self, name):
-        """Metodo para pegar valores na lista."""
-        return self._lista[name]
-
-    def __setattr__(self, name, value):
-        """Metodo para colocar valores na lista."""
-        self._lista[name] = value
-
-    def __delattr__(self, name):
-        """Metodo para deletar valores da lista."""
-        del self._lista[name]
+        self.__dict__ = dict(lista) if type(lista) == dict else {}
+        self.__table__ = None
+        self.__pk__ = None
 
     def __repr__(self):
         """Representação do Objeto."""
-        return str(self._lista)
+        return str(self.getDict())
 
-    @classmethod
-    def setPK(cls, campo):
+    def getDict(self):
+        """Retorna Um dicionario com os dados do model."""
+        return {i: j for i, j in filter(lambda x: not (
+            x[0] in ['__table__', '__pk__']), self.__dict__.items())}
+
+    def setPK(self, campo):
         """Metodo para escolhar a chave primaria da tabela."""
-        if campo in cls._lista.keys():
-            cls._pk = campo
+        if campo in self.__dict__.keys():
+            self.__pk__ = campo
         else:
             raise AttributeError('Campo Não Definido na Tabela')
 
     def insert(self):
         """Insere os dados na tabela com os campos adicionados."""
-        campos = ", ".join(self._lista.keys())
-        values = ", ".join(map(lambda x: f"%({x})s", self._lista.keys()))
+        campos = ", ".join(self.getDict().keys())
+        values = ", ".join(map(lambda x: f"%({x})s", self.getDict().keys()))
         return current_app.db().operacao(
             f"INSERT INTO {self.__table__}({campos}) VALUES ({values})",
-            self._lista
+            self.getDict()
         )
 
     def update(self, campo, val):
         """Atualiza os campos da tabela."""
+        dic = self.getDict()
         campos = ', '.join(
             map(lambda x: ' = '.join(x),
                 zip(
                     filter(
-                        lambda x: not (self._pk == x),
-                        self._lista.keys()
+                        lambda x: not (self.__pk__ == x),
+                        dic.keys()
                     ),
                     map(lambda x: f"%({x})s",
                         filter(
-                            lambda x: not (self._pk == x),
-                            self._lista.keys()
+                            lambda x: not (self.__pk__ == x),
+                            dic.keys()
                             )
                         )
                     )
                 )
             )
-        values = dict(self._lista)
-        values[campo] = val
+        dic[campo] = val
         return current_app.db().operacao(
             f"UPDATE {self.__table__} "
             f"SET {campos} where {campo} = %({campo})s",
-            values
+            dic
         )
 
     def delete(self, campo, val):
@@ -134,11 +123,11 @@ class Model:
     def select(self, sql, campos=None, sel='fetchone'):
         """Seleciona Registros da Tabela."""
         if sel == 'fetchone':
-            model = self.__class__()
+            model = None
             items = current_app.db().select(sql, campos, sel)
             if items:
-                for x in items.items():
-                    model.__setattr__(x[0], x[1])
+                model = self.__class__(items)
         elif sel == 'fetchall':
             model = current_app.db().select(sql, campos, sel)
+            model = [self.__class__(i) for i in model]
         return model

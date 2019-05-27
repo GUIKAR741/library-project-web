@@ -1,60 +1,25 @@
-<!DOCTYPE html>
-<!--
-Template Name: Materialize - Material Design Admin Template
-Author: PixInvent
-Website: http://www.pixinvent.com/
-Contact: hello@pixinvent.com
-Follow: www.twitter.com/pixinvents
-Like: www.facebook.com/pixinvents
-Purchase: https://themeforest.net/item/materialize-material-design-admin-template/11446068?ref=pixinvent
-Renew Support: https://themeforest.net/item/materialize-material-design-admin-template/11446068?ref=pixinvent
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
-
--->
-<html class="loading" lang="en" data-textdirection="ltr">
-  <!-- BEGIN: Head-->
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Materialize is a Material Design Admin Template,It's modern, responsive and based on Material Design by Google.">
-    <meta name="keywords" content="materialize, admin template, dashboard template, flat admin template, responsive admin template, eCommerce dashboard, analytic dashboard">
-    <meta name="author" content="ThemeSelect">
-    <title>SYML | System Library</title>
-    <link rel="apple-touch-icon" href="../../../app-assets/images/favicon/apple-touch-icon-152x152.png">
-    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/favicon/favicon-32x32.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- BEGIN: VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/vendors.min.css">
-    <!-- END: VENDOR CSS-->
-    <!-- BEGIN: Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/vertical-menu-nav-dark-template/materialize.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/vertical-menu-nav-dark-template/style.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/login.css">
-    <!-- END: Page Level CSS-->
-    <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/custom/custom.css">
-    <!-- MAIN CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/main.css">
-    <!-- END: Custom CSS-->
-  </head>
-  <!-- END: Head-->
-  <body class="vertical-layout page-header-light vertical-menu-collapsible vertical-menu-nav-dark 1-column login-bg  blank-page blank-page" data-open="click" data-menu="vertical-menu-nav-dark" data-col="1-column">
+{% extends "base/base-login-forgot.html" %}
+{% block title%}Login{% endblock %}
+{% block background%}
+login-bg
+{% endblock %}
+{% block body%}
     <div class="row">
       <div class="col s12">
         <div class="container">
           <div id="login-page" class="row">
             <div class="col s12 m6 l4 z-depth-4 card-panel border-radius-6 login-card bg-opacity-8">
-              <form class="login-form" id="loginValidate">
+              <form class="login-form" id="loginValidate" method="POST">
+                {{ form.csrf_token }}
                 <div class="row">
                   <div class="input-field col s12">
-                    <h5 class="ml-4">Sign in</h5>
+                    <h5 class="ml-4">Login</h5>
                   </div>
                 </div>
                 <div class="row margin">
                   <div class="input-field col s12">
                     <i class="material-icons prefix pt-2">email</i>
-                    <input id="usuario" name="usuario" type="email" data-error=".errorUsuario">
+                    {{ form.usuario(**({'id':'usuario', 'type': 'email', 'data-error': '.errorUsuario'})) }}
                     <label for="usuario" class="center-align">Email</label>
                     <div class="errorUsuario" style="margin-left: 45px;"></div>
                   </div>
@@ -62,19 +27,19 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="row margin">
                   <div class="input-field col s12">
                     <i class="material-icons prefix pt-2">lock</i>
-                    <input id="senha" name="senha" type="password" data-error=".errorSenha">
+                    {{ form.senha(**({'id':'senha', 'data-error': '.errorSenha'})) }}
                     <label for="senha">Senha</label>
                     <div class="errorSenha" style="margin-left: 45px;"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
-                    <button class="btn waves-effect waves-light border-square gradient-45deg-light-blue-cyan col s12 swal-login-error" type="submit">Login</button>
+                    <button class="btn waves-effect waves-light border-square gradient-45deg-light-blue-cyan col s12" type="submit">Entrar</button>
                   </div>
                 </div>
                 <div class="row">
                   <div class="input-field col s12 left">
-                    <p class="margin right-align medium-small forgot"><a href="esqueceu-senha.html">Equeceu a senha?</a></p>
+                    <p class="margin right-align medium-small forgot"><a href="{{ url_for('index.senha')}}">Equeceu a senha?</a></p>
                   </div>
                 </div>
               </form>
@@ -83,14 +48,5 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
       </div>
     </div>
-
-    <script src="../../../app-assets/js/vendors.min.js" type="text/javascript"></script>
-    <script src="../../../app-assets/vendors/jquery-validation/jquery.validate.min.js"></script>
-    <script src="../../../app-assets/vendors/formatter/jquery.formatter.min.js"></script>
-    <script src="../../../app-assets/vendors/sweetalert/sweetalert.min.js"></script>
-    <script src="../../../app-assets/js/plugins.js" type="text/javascript"></script>
-    <script src="../../../app-assets/js/custom/custom-script.js" type="text/javascript"></script>
-    <!-- MAIN JS-->
-    <script src="../../../app-assets/js/main.js" type="text/javascript"></script>
-  </body>
-</html>
+{% endblock %}
+{% block script %}<script src="{{ url_for('static', filename='js/custom/login.js')}}" type="text/javascript"></script>{% endblock %}

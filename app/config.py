@@ -10,6 +10,10 @@ class Config:
     MYSQL_DATABASE_PASSWORD = 'qwe123'
     MYSQL_DATABASE_DB = 'syml'
     MYSQL_DATABASE_CHARSET = 'utf8'
+    SECRET_KEY = 'achoqueseiflask'
+    JWT_SECRET_KEY = 'continuoachandoqueseiflask'
+    WTF_CSRF_SECRET_KEY = 'naoseipraqueissoserve'
+    WTF_CSRF_ENABLED = True
 
 
 class development(Config):

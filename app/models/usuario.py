@@ -6,7 +6,30 @@ from passlib.hash import pbkdf2_sha256
 class Usuario(Model):
     """Model da Tabela ."""
 
-    __table__ = 'usuario'
+    def __init__(self, lista: dict = {}):
+        """."""
+        super().__init__(lista)
+        self.__table__ = 'usuario'
+        self.__pk__ = 'id'
+
+    @property
+    def is_authenticated(self):
+        """."""
+        return True
+
+    @property
+    def is_active(self):
+        """."""
+        return True
+
+    @property
+    def is_anonymous(self):
+        """."""
+        return False
+
+    def get_id(self):
+        """."""
+        return str(self.getDict()[self.__pk__])
 
     def procurarUsuarioPeloEmail(self, email: str):
         """."""
@@ -14,13 +37,12 @@ class Usuario(Model):
             'select * from usuario where email = %(email)s',
             {'email': email}
             )
-        if usuario:
-            return usuario
+        return usuario if usuario else None
 
     def criptografar_senha(self, password):
         """."""
-        self.__setattr__(password, pbkdf2_sha256.hash(self.__getattr__(password)))
+        self.__dict__[password] = pbkdf2_sha256.hash(self.__dict__[password])
 
-    def verify_password(self, password):
+    def verify_password(self, campoPassword, password):
         """."""
-        return pbkdf2_sha256.verify(password, self.__getattr__(password))
+        return pbkdf2_sha256.verify(password, self.__dict__[campoPassword])

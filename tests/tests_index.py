@@ -7,12 +7,20 @@ from unittest.mock import patch
 class TestIndexRoute(TestFlaskBase):
     """."""
 
-    def test_se_a_index_retorna_ola(self):
+    def test_login_status_200(self):
         """."""
-        esperado = 'olá'
-        retorno = self.client.get(url_for('index.index_route'))
+        retorno = self.client.get(url_for('index.login'))
         self.assertEqual(retorno.status_code, 200)
-        self.assertEqual(retorno.data.decode(), esperado)
+
+    def test_esqueceu_senha_status_200(self):
+        """."""
+        retorno = self.client.get(url_for('index.senha'))
+        self.assertEqual(retorno.status_code, 200)
+
+    def test_erro_404(self):
+        """."""
+        retorno = self.client.get('/test404')
+        self.assertEqual(retorno.status_code, 404)
 
     @patch("app.controllers.render_template", return_value=b'OK')
     def test_pagina_eh_chamado_com_parametro(self, moked):

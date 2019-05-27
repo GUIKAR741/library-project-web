@@ -18,6 +18,11 @@ flask = "*"
 flask-mysql = "*"
 flask-restful = "*"
 passlib = "*"
+flask-jwt-extended = "*"
+flask-login = "*"
+flask-WTF = "*"
+requests = "*"
+bs4 = "*"
 
 [requires]
 python_version = "3.7"

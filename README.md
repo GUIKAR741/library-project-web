@@ -4,6 +4,9 @@ Site Biblioteca
 ## Bibliotecas Utilizadas
 - Flask
 - Flask-MySQL
+- Flask-Login
+- Flask-WTF
+- Passlib
 
 ## Como rodar esse projeto
 

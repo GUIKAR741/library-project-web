@@ -2,7 +2,6 @@
 from tests_flask_base import TestFlaskBase
 from unittest.mock import patch
 from flaskext.mysql import MySQL
-from app.models import Model
 
 
 class TestQuerys(TestFlaskBase):
@@ -35,15 +34,18 @@ class TestQuerys(TestFlaskBase):
         with self.assertRaises(pymysql.err.ProgrammingError):
             self.app.db().select('SELECT * FROM a', None)
 
-    def test_se_o_select_em_uma_tabela_que_existe_falha(self):
+    def test_se_o_select_de_valor_que_nao_existe_retorna_vazio(self):
         """."""
-        # with self.assertRaises(pymysql.err.ProgrammingError):
         self.assertEqual(
-            self.app.db().select('SELECT * FROM usuario', None),
+            self.app.db().select(
+                'SELECT * FROM usuario WHERE id = %(id)s', {'id': -1}
+                ),
             None
             )
         self.assertEqual(
-            self.app.db().select('SELECT * FROM usuario', None, 'fetchall'),
+            self.app.db().select(
+                'SELECT * FROM usuario where id= %(id)s', {'id': -1}, 'fetchall'
+                ),
             ()
             )
 
@@ -117,37 +119,3 @@ class TestQuerys(TestFlaskBase):
             {'id': 1}
         )
         moked().commit.assert_called()
-
-
-class TestModel(TestFlaskBase):
-    """."""
-
-    def test_model_insert_na_lista_de_atributos(self):
-        """."""
-        esperado = {'test1': 'test', 'test2': 'tset'}
-        model = Model()
-        model.test1 = 'test'
-        model.test2 = 'tset'
-        self.assertEqual(model._lista, esperado)
-
-    def test_model_verificando_campos_na_lista_de_atributos(self):
-        """."""
-        model = Model()
-        model.test1 = 'test'
-        model.test2 = 'tset'
-        self.assertEqual(model.test1, 'test')
-        self.assertEqual(model.test2, 'tset')
-
-    def test_model_verificando_campos_foram_excluidos_da_lista_de_atributos(self):
-        """."""
-        esperado = {'test1': 'test', 'test2': 'tset'}
-        model = Model()
-        model.test1 = 'test'
-        model.test2 = 'tset'
-        self.assertEqual(model._lista, esperado)
-        self.assertEqual(model.test1, 'test')
-        self.assertEqual(model.test2, 'tset')
-        del model.test1
-        self.assertEqual(model._lista, {'test2': 'tset'})
-        del model.test2
-        self.assertEqual(model._lista, {})
