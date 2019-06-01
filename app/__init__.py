@@ -41,6 +41,10 @@ def start_app() -> Flask:
         return Usuario().select("select * from usuario where id = %(user_id)s",
                                 {'user_id': user_id})
 
+    app.jinja_env.filters['datetime'] = lambda value, format:\
+        value.strftime(format)
+    app.jinja_env.tests['maiorZero'] = lambda x: len(x) > 0
+
     from .controllers import index
     app.register_blueprint(index)
 

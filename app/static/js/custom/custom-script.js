@@ -107,6 +107,16 @@ function login_error_msg(texto = ' ') {
 	});
 };
 
+function sucesso(titulo = '' , texto = ''){
+	swal({
+		title: titulo,
+		text: texto,
+		icon: "success",
+		timer: 1500,
+		buttons: false
+	});
+}
+
 $('.swal-login-falha').click(function () {
 	swal({
 		title: "Tente novamente!",
@@ -174,76 +184,3 @@ $('.swal-confirmacao').click(function () {
 		}
 	});
 });
-
-$(function (){
-	$('#cpf').formatter({
-		'pattern': '{{999}}.{{999}}.{{999}}-{{99}}',
-		'persistent': true
-	});
-	$('#telefone').formatter({
-		'pattern': '({{99}}){{99999}}-{{9999}}',
-		'persistent': true
-	});
-	$("#formValidate").validate({
-		rules: {
-			nome: {
-				required: true
-			},
-			email: {
-				required: true,
-				email: true
-			},
-			telefone: {
-				required: false,
-				minlength: 11
-			},
-			senha: {
-				required: true,
-				minlength: 6
-			},
-			nova_senha: {
-				required: false,
-				minlength: 6
-			},
-			conf_nova_senha: {
-				required: false,
-				minlength: 6,
-				equalTo: "#nova_senha"
-			},
-		},
-		//For custom messages
-		messages: {
-			nome: {
-				required: "Nome obrigatório!",
-			},
-			email: {
-				required: "Email obrigatório!",
-				email: "Email inválido!"
-			},
-			telefone: {
-				minlength: "Telefone inválido! Tamanho no mínimo 11 caracteres."
-			},
-			senha: {
-				required: "Senha obrigatória!",
-				minlength: "Senha inválida! Tamanho no mínimo 6 caracteres."
-			},
-			nova_senha: {
-				minlength: "Senha inválida! Tamanho no mínimo 6 caracteres."
-			},
-			conf_nova_senha: {
-				minlength: "Senha inválida! Tamanho no mínimo 6 caracteres.",
-				equalTo: "Senha diferentes!"
-			},
-		},
-		errorElement: 'div',
-		errorPlacement: function (error, element) {
-			var placement = $(element).data('error');
-			if (placement) {
-				$(placement).append(error)
-			} else {
-				error.insertAfter(element);
-			}
-		}
-	});
-});
-

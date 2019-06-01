@@ -22,7 +22,7 @@
 						<div class="card gradient-shadow blue border-radius-3 animate fadeRight">
 							<div class="card-content center">
 								<i class="material-icons large white-text">bookmark_border</i>
-								<h5 class="white-text lighten-4">2 Livros</h5>
+								<h5 class="white-text lighten-4">{{reservas}} Livros</h5>
 								<p class="white-text lighten-4">Reservados</p>
 							</div>
 						</div>
@@ -31,7 +31,7 @@
 						<div class="card gradient-shadow blue border-radius-3 animate fadeRight">
 							<div class="card-content center">
 								<i class="material-icons large white-text">book</i>
-								<h5 class="white-text lighten-4">1 Livro</h5>
+								<h5 class="white-text lighten-4">{{emprestimos}} Livro</h5>
 								<p class="white-text lighten-4">Alocado</p>
 							</div>
 						</div>
@@ -40,7 +40,11 @@
 						<div class="card gradient-shadow blue border-radius-3 animate fadeRight">
 							<div class="card-content center">
 								<i class="material-icons large white-text">date_range</i>
-								<h5 class="white-text lighten-4">01/02/2020</h5>
+								{% if not devolucao is none %}
+								<h5 class="white-text lighten-4">{{devolucao|datetime("%d/%m/%Y")}}</h5>
+								{% else %}
+								<h5 class="white-text lighten-4">--/--/----</h5>
+								{% endif %}
 								<p class="white-text lighten-4">Entrega mais próxima</p>
 							</div>
 						</div>

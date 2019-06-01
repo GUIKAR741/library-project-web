@@ -16,7 +16,7 @@ class UserForm(FlaskForm):
 
     nome = StringField("Usuario", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired()])
-    cpf = StringField("CPF", validators=[DataRequired()])
+    cpf = StringField("CPF")
     telefone = StringField("Telefone")
     senha = PasswordField("Senha", validators=[DataRequired()])
     novaSenha = PasswordField("Nova Senha")

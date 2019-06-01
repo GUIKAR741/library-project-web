@@ -27,30 +27,35 @@
                 <div id="validation" class="card card card-default scrollspy animate fadeUp">
                     <div class="card-content">
                       <h4 class="card-title">Minhas informações</h4>
-                      <form class="col s12" id="formValidate">
+                      <form class="col s12" id="formValidate" method="POST">
+                        {{form.csrf_token}}
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">account_circle</i>
-                                <input id="nome" name="nome" type="text" value="{{ user.nome }}" data-error=".errorNome">
+                                <!-- <input id="nome" name="nome" type="text" value="" data-error=".errorNome"> -->
+                                {{ form.nome(**({'id':'nome', 'data-error': '.errorNome'})) }}
                                 <label for="nome">Nome*</label>
                                 <div class="errorNome" style="margin-left: 45px;"></div>
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">contacts</i>
-                                <input disabled id="cpf" type="text" value="{{ user.cpf }}">
+                                <!-- <input disabled id="cpf" type="text" value=""> -->
+                                {{ form.cpf(**({'id':'cpf', 'disabled': True})) }}
                                 <label for="cpf">CPF</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">email</i>
-                                <input id="email" name="email" type="email" class="validate" data-error=".errorEmail" value="{{ user.email }}">
+                                <!-- <input id="email" name="email" type="email" class="validate" data-error=".errorEmail" value=""> -->
+                                {{ form.email(**({'id':'email', 'type': 'email', 'data-error': '.errorEmail'})) }}
                                 <label for="email">Email*</label>
                                 <div class="errorEmail" style="margin-left: 45px;"></div>
                             </div>
                             <div class="input-field col m6 s12">
                                 <i class="material-icons prefix">phone_android</i>
-                                <input id="telefone" name="telefone" type="text" value="{{ user.telefone }}" data-error=".errorTelefone">
+                                <!-- <input id="telefone" name="telefone" type="text" value="" data-error=".errorTelefone"> -->
+                                {{ form.telefone(**({'id':'telefone', 'data-error': '.errorTelefone'})) }}
                                 <label for="telefone">telefone</label>
                                 <div class="errorTelefone" style="margin-left: 45px;"></div>        
                             </div>
@@ -63,7 +68,8 @@
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">lock_outline</i>
-                                <input id="senha" name="senha" type="password" class="validate" data-error=".errorSenha">
+                                <!-- <input id="senha" name="senha" type="password" class="validate" data-error=".errorSenha"> -->
+                                {{ form.senha(**({'id':'senha', 'data-error': '.errorSenha'})) }}
                                 <label for="senha">Senha</label>
                                 <div class="errorSenha" style="margin-left: 45px;"></div>
                             </div>
@@ -76,20 +82,22 @@
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">lock</i>
-                                <input id="nova_senha" name="nova_senha" type="password" class="validate" data-error=".errorNovaSenha">
-                                <label for="nova_senha">Nova senha</label>
+                                <!-- <input id="nova_senha" name="nova_senha" type="password" class="validate" data-error=".errorNovaSenha"> -->
+                                {{ form.novaSenha(**({'id':'novaSenha', 'data-error': '.errorNovaSenha'})) }}
+                                <label for="novaSenha">Nova senha</label>
                                 <div class="errorNovaSenha" style="margin-left: 45px;"></div>
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">lock</i>
-                                <input id="conf_nova_senha" name="conf_nova_senha" type="password" class="validate" data-error=".errorConfNovaSenha">
-                                <label for="conf_nova_senha">Confirmar nova senha</label>
+                                <!-- <input id="conf_nova_senha" name="conf_nova_senha" type="password" class="validate" data-error=".errorConfNovaSenha"> -->
+                                {{ form.confNovaSenha(**({'id':'confNovaSenha', 'data-error': '.errorConfNovaSenha'})) }}
+                                <label for="confNovaSenha">Confirmar nova senha</label>
                                 <div class="errorConfNovaSenha" style="margin-left: 45px;"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <button class="btn cyan waves-effect waves-light right swal-confirmacao" type="submit" >Salvar alterações
+                                <button class="btn cyan waves-effect waves-light right" type="submit" >Salvar alterações
                                     <i class="material-icons right">send</i>
                                  </button>
                             </div>
@@ -104,5 +112,7 @@
     </div>
     <!-- END: Page Main-->
 {% endblock %}
-{% block js %}<script src="/static/vendors/formatter/jquery.formatter.min.js"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-validation/jquery.validate.min.js')}}"></script>{% endblock %}
+{% block js %}<script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js')}}"></script>
+    <script src="/static/vendors/jquery-mask/jquery.mask.min.js"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/custom/perfil.js')}}"></script>{% endblock %}

@@ -31,16 +31,6 @@
                             <table class="responsive-table striped">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <form action="#">
-                                                <p>
-                                                  <label>
-                                                    <input type="checkbox" />
-                                                    <span>Todos</span>
-                                                  </label>
-                                                </p>
-                                            </form>
-                                        </th>
                                         <th>Título do livro</th>
                                         <th>Prazo para entrega</th>
                                         <th>Quant. de renovações</th>
@@ -48,90 +38,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% if emprestimos is maiorZero %}
+                                    {% for emp in emprestimos %}
                                     <tr>
+                                        <td>{{emp.titulo}}</td>
+                                        <td>{{emp.data_devolucao_estimada|datetime("%d/%m/%Y")}}</td>
+                                        <td>{{emp.renovacao}}/10</td>
                                         <td>
-                                            <form action="#">
-                                                <p>
-                                                  <label>
-                                                    <input type="checkbox" />
-                                                    <span></span>
-                                                  </label>
-                                                </p>
-                                            </form>
+                                            <a href="/library/emprestimos/renovacao/{{emp.id}}" class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped" data-position='bottom' data-tooltip='Renovar'>
+                                                <i class="material-icons">autorenew</i>
+                                            </a>
                                         </td>
-                                        <td>Nome Livro Nome Livro Nome LIVRO Nome Livro Nome LIVRONome Livro</td>
-                                        <td>01/06/2019</td>
-                                        <td>0/10</td>
-                                        <td><button class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-renovacao" data-position='bottom' data-tooltip='Renovar'type="submit" ><i class="material-icons">autorenew</i></button></td>
                                     </tr>
+                                    {% endfor %}
+                                    {% else %}
                                     <tr>
-                                        <td>
-                                            <form action="#">
-                                                <p>
-                                                  <label>
-                                                    <input type="checkbox" />
-                                                    <span></span>
-                                                  </label>
-                                                </p>
-                                            </form>
-                                        </td>
-                                        <td>Nome Livro Nome Livro Nome LIVRO Nome Livro Nome LIVRONome Livro</td>
-                                        <td>01/06/2019</td>
-                                        <td>0/10</td>
-                                        <td><button class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-renovacao" data-position='bottom' data-tooltip='Renovar'type="submit" ><i class="material-icons">autorenew</i></button></td>
+                                        <td colspan="4" style='text-align: center'>Você Não Possui Emprestimos!</td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <form action="#">
-                                                <p>
-                                                  <label>
-                                                    <input type="checkbox" />
-                                                    <span></span>
-                                                  </label>
-                                                </p>
-                                            </form>
-                                        </td>
-                                        <td>Nome Livro Nome Livro Nome LIVRO Nome Livro Nome LIVRONome Livro</td>
-                                        <td>01/06/2019</td>
-                                        <td>0/10</td>
-                                        <td><button class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-renovacao" data-position='bottom' data-tooltip='Renovar'type="submit" ><i class="material-icons">autorenew</i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <form action="#">
-                                                <p>
-                                                  <label>
-                                                    <input type="checkbox" />
-                                                    <span></span>
-                                                  </label>
-                                                </p>
-                                            </form>
-                                        </td>
-                                        <td>Nome Livro Nome Livro Nome LIVRO Nome Livro Nome LIVRONome Livro</td>
-                                        <td>01/06/2019</td>
-                                        <td>0/10</td>
-                                        <td><button class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-renovacao" data-position='bottom' data-tooltip='Renovar'type="submit" ><i class="material-icons">autorenew</i></button></td>
-                                    </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row">
-                            <div style="padding: 24px">
-                                <div class="col m6">
-                                    <button class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-renovacao" data-position='bottom' data-tooltip='Renovar'type="submit" ><i class="material-icons">autorenew</i></button>
-                                </div>
-                                <div class="col m6">
-                                    <ul class="pagination right">
-                                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                                        <li class="active cyan"><a href="#!">1</a></li>
-                                        <li class="waves-effect"><a href="#!">2</a></li>
-                                        <li class="waves-effect"><a href="#!">3</a></li>
-                                        <li class="waves-effect"><a href="#!">4</a></li>
-                                        <li class="waves-effect"><a href="#!">5</a></li>
-                                        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                                    </ul>
-                                </div> 
-                            </div>  
                         </div>
                     </div>
                 </div>
@@ -141,3 +67,18 @@
     </div>
     <!-- END: Page Main-->
 {% endblock %}
+{%block js%}<script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js')}}"></script>
+{% if (erro is ne('False')) %}
+<script>
+    $(document).ready(function(){
+        swal({
+            title: "{{erro.msg}}",
+            text: " ",
+            icon: "{{erro.icon}}",
+            timer: 1500,
+            buttons: false
+        });
+    });
+</script>
+{%endif%}
+{%endblock%}

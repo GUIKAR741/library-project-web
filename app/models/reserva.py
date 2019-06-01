@@ -2,7 +2,7 @@
 from . import Model
 
 
-class Exemplar(Model):
+class Reserva(Model):
     """."""
 
     def __init__(self, lista: dict = {}):
