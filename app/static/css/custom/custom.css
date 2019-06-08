@@ -42,3 +42,6 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
     -webkit-background-size: cover;
             background-size: cover;
 }
+.brand-sidebar .logo-wrapper a.brand-logo img {
+	height: 23px;
+}
