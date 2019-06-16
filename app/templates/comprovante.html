@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<!--
+Template Name: Materialize - Material Design Admin Template
+Author: PixInvent
+Website: http://www.pixinvent.com/
+Contact: hello@pixinvent.com
+Follow: www.twitter.com/pixinvents
+Like: www.facebook.com/pixinvents
+Purchase: https://themeforest.net/item/materialize-material-design-admin-template/11446068?ref=pixinvent
+Renew Support: https://themeforest.net/item/materialize-material-design-admin-template/11446068?ref=pixinvent
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+
+-->
+<html class="loading" lang="pt-BR" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+        content="Materialize is a Material Design Admin Template,It's modern, responsive and based on Material Design by Google.">
+    <meta name="keywords"
+        content="materialize, admin template, dashboard template, flat admin template, responsive admin template, eCommerce dashboard, analytic dashboard">
+    <meta name="author" content="ThemeSelect">
+    <title>Comprovante Emprestimo | System Library</title>
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon/apple-touch-icon-152x152.png')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon/icon.png')}}">
+    <link href="{{ url_for('static', filename='css/custom/icon.css')}}" rel="stylesheet">
+    <!-- BEGIN: VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendors/vendors.min.css')}}">
+    <!-- END: VENDOR CSS-->
+    <!-- BEGIN: Page Level CSS-->
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='css/themes/vertical-menu-nav-dark-template/materialize.css')}}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='css/themes/vertical-menu-nav-dark-template/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/login.css')}}">
+    <!-- END: Page Level CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom/custom.css')}}">
+    <!-- END: Custom CSS-->
+    <style>
+        .back{
+            background-color: #fff;
+        }
+        .invoice-box {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body class='back'>
+    <br>
+    <div class="invoice-box" id="renderPDF">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="{{ url_for('static', filename='images/logo/logo.png')}}" style="width:100%; max-width:150px;">
+                            </td>
+
+                            <td>
+                                Nº Comprovante #:  {{dados.id}}<br>
+                                Data: {{dados.data_emprestimo|datetime("%d/%m/%Y")}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                <b>SYML.</b><br>
+                            </td>
+
+                            <td>
+                                {{user.nome}}<br>
+                                {{user.email}} </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>
+                    Livro
+                </td>
+
+                <td>
+                    Exemplar
+                </td>
+            </tr>
+
+            <tr class="item">
+                <td>
+                    {{dados.titulo}}
+                </td>
+
+                <td>
+                    {{dados.codigo}}
+                </td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/vendors.min.js')}}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-validation/jquery.validate.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='vendors/formatter/jquery.formatter.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/plugins.js')}}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/custom/custom-script.js')}}" type="text/javascript"></script>
+</body>
+
+</html>

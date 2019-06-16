@@ -35,6 +35,7 @@
                                         <th>Prazo para entrega</th>
                                         <th>Quant. de renovações</th>
                                         <th>Renovar</th>
+                                        <th>Comprovante</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,6 +48,13 @@
                                         <td>
                                             <a href="/library/emprestimos/renovacao/{{emp.id}}" class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped" data-position='bottom' data-tooltip='Renovar'>
                                                 <i class="material-icons">autorenew</i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/library/emprestimos/comprovante/{{emp.id}}"
+                                                class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped"
+                                                data-position='bottom' data-tooltip='Comprovante'>
+                                                <i class="material-icons">assignment</i>
                                             </a>
                                         </td>
                                     </tr>

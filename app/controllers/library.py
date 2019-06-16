@@ -187,6 +187,14 @@ def emprestimos(renovacao, id):
                 "Não Foi Possivel Renovar Livro já Reservado!",
                 'icon': 'error'
                 }
+    elif renovacao == 'comprovante' and (id != 0 and id > 0):
+        emprest = Emprestimo()
+        e = emprest.select("SELECT ee.id, l.titulo, e.codigo, ee.data_emprestimo "
+                           "FROM emprestimo ee JOIN exemplar e ON ee.exemplar_id=e.id "
+                           "JOIN livro l ON e.livro_id=l.id "
+                           "WHERE ee.usuario_id=%(id)s and ee.id=%(ide)s",
+                           {'id': current_user.id, 'ide': id})
+        return render_template('comprovante.html', dados=e, user=current_user)
     emps = emprestimo.select(
         "SELECT ee.id, l.titulo, ee.data_devolucao_estimada, renovacao "
         "FROM emprestimo ee JOIN exemplar e ON ee.exemplar_id=e.id "
