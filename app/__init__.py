@@ -20,30 +20,33 @@ def start_app() -> Flask:
     app.crsf = CSRFProtect(app)
 
     @app.errorhandler(404)
-    def page_not_found(e):
+    def page_not_found(e):  # pylint: disable=unused-variable
         """."""
         return render_template('erro-404.html'), 404
 
     @app.errorhandler(500)
-    def server_error(e):
+    def server_error(e):  # pylint: disable=unused-variable
         """."""
         return render_template('erro-500.html'), 500
 
     @app.errorhandler(401)
-    def unauthorized(e):
+    def unauthorized(e):  # pylint: disable=unused-variable
         """."""
         return render_template('erro-401.html'), 401
 
     @login.user_loader
-    def load_user(user_id):
+    def load_user(user_id):  # pylint: disable=unused-variable
         """."""
         from .models.usuario import Usuario
         return Usuario().select("select * from usuario where id = %(user_id)s",
                                 {'user_id': user_id})
 
-    app.jinja_env.filters['datetime'] = lambda value, format:\
-        value.strftime(format)
-    app.jinja_env.tests['maiorZero'] = lambda x: len(x) > 0
+    app.jinja_env.filters['datetime'] = (  # pylint: disable=no-member
+        lambda value, format: value.strftime(format)
+        )
+    app.jinja_env.tests['maiorZero'] = (  # pylint: disable=no-member
+        lambda x: len(x) > 0
+    )
 
     from .controllers import index
     app.register_blueprint(index)

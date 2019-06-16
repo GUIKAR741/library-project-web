@@ -49,7 +49,7 @@ def home():
         "where usuario_id=%(uid)s and status=0 "
         "ORDER BY data_devolucao_estimada",
         {'uid': current_user.id},
-    )
+    ).data_devolucao_estimada
     return render_template('home.html',
                            livros=livro,
                            qtdlivro=total,

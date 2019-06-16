@@ -15,7 +15,6 @@ mutpy = "*"
 
 [packages]
 flask = "*"
-flask-mysql = "*"
 flask-restful = "*"
 passlib = "*"
 flask-jwt-extended = "*"
@@ -23,6 +22,7 @@ flask-login = "*"
 flask-WTF = "*"
 requests = "*"
 bs4 = "*"
+flask-mysql = {editable = true,git = "https://github.com/GUIKAR741/flask-mysql.git",ref = "master"}
 
 [requires]
 python_version = "3.7"
