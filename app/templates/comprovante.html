@@ -152,7 +152,11 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             <td>
                                 Nº Comprovante #:  {{dados.id}}<br>
-                                Data: {{dados.data_emprestimo|datetime("%d/%m/%Y")}}
+                                Data Emprestimo: {{dados.data_emprestimo|datetime("%d/%m/%Y")}}<br>
+                                {% if dados.status == 1 %}
+                                Data Devolução: {{dados.data_devolucao|datetime("%d/%m/%Y")}}<br>
+                                Multa: {{dados.multa}}
+                                {% endif %}
                             </td>
                         </tr>
                     </table>

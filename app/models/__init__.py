@@ -131,3 +131,6 @@ class Model(object):
             model = current_app.db().select(sql, campos, sel)
             model = [self.__class__(i) for i in model]
         return model
+
+    def _op(self, sqlstr, campos):
+        return sql().operacao(sqlstr, campos)

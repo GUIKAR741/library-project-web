@@ -41,10 +41,18 @@
                                     {%for i in reservas%}
                                     <tr>
                                         <td>{{i.titulo}}</td>
-                                        {%if i.data_devolucao_estimada is defined%}
+                                        {%if i.data_devolucao_estimada is none%}
+                                        <td>Livro Disponivel</td>
+                                        {%else%}
                                         <td>{{i.data_devolucao_estimada|datetime("%d/%m/%Y")}}</td>
                                         {%endif%}
-                                        <td><button class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-cancelar" data-position='top' data-tooltip='Cancelar'type="submit" ><i class="material-icons">clear</i></button></td>
+                                        <td>
+                                            <a href="/library/reservas/{{i.idReserva}}"
+                                                class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped swal-cancelar"
+                                                data-position='top' data-tooltip='Cancelar' type="submit">
+                                                <i class="material-icons">clear</i>
+                                            </a>
+                                        </td>
                                     </tr>
                                     {%endfor%}
                                     {%else%}

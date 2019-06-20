@@ -63,24 +63,40 @@ def home():
 @login_required
 def acervo(id):
     """."""
-    itemsPagina = 12
-    inicio = (id - 1) * itemsPagina
     livro = Livro()
-    total = livro.select("SELECT count(id) as total FROM livro").total
-    livros = livro.select(
-        "SELECT id, titulo, autor, capa, ano, editora "
-        "FROM livro LIMIT %(inicio)s, %(items)s",
-        {'inicio': inicio, "items": itemsPagina},
-        sel='fetchall'
+    if 'livro' in request.args.keys():
+        livros = livro.select(
+            "SELECT id, titulo, autor, capa, ano, editora "
+            "FROM livro WHERE titulo LIKE %(livro)s",
+            {'livro': '%' + request.args['livro'] + '%'},
+            sel='fetchall'
         )
-    lista = [[]]
-    total = ceil(total/itemsPagina)
-    for i in livros:
-        if len(lista[-1]) < 4:
-            lista[-1].append(i)
-        else:
-            lista.append([])
-            lista[-1].append(i)
+        lista = [[]]
+        for i in livros:
+            if len(lista[-1]) < 4:
+                lista[-1].append(i)
+            else:
+                lista.append([])
+                lista[-1].append(i)
+        total = len(lista)
+    else:
+        itemsPagina = 12
+        inicio = (id - 1) * itemsPagina
+        total = livro.select("SELECT count(id) as total FROM livro").total
+        livros = livro.select(
+            "SELECT id, titulo, autor, capa, ano, editora "
+            "FROM livro LIMIT %(inicio)s, %(items)s",
+            {'inicio': inicio, "items": itemsPagina},
+            sel='fetchall'
+            )
+        total = ceil(total/itemsPagina)
+        lista = [[]]
+        for i in livros:
+            if len(lista[-1]) < 4:
+                lista[-1].append(i)
+            else:
+                lista.append([])
+                lista[-1].append(i)
     return render_template('acervo.html', lista=lista, total=total, pagina=id)
 
 
@@ -124,28 +140,43 @@ def perfil():
             return jsonify({'msg': 'Erro!'})
 
 
-@library.route('/library/reservas/')
+@library.route('/library/reservas/', defaults={'id': 0})
+@library.route('/library/reservas/<int:id>')
 @login_required
-def reservas():
+def reservas(id):
     """."""
     r = Reserva()
+    if id != 0:
+        r.status = 0
+        r.update('id', val=id)
     livros = r.select(
-        "select * from reserva where usuario_id=%(id)s and status=1",
+        """
+        select r.id, r.livro_id, l.titulo from reserva r
+        join livro l on l.id=r.livro_id
+        where usuario_id=%(id)s and status=1""",
         {'id': current_user.id},
         'fetchall'
         )
     res = []
     for i in livros:
-        res.append(r.select(
+        ll = r.select(
             "SELECT l.titulo, ee.data_devolucao_estimada "
             "FROM livro as l JOIN exemplar as e "
             "ON l.id=e.livro_id "
             "JOIN emprestimo as ee "
             "ON ee.exemplar_id=e.id "
-            "WHERE l.id=%(id)s "
+            "WHERE l.id=%(id)s AND ee.status=0 "
             "ORDER BY ee.data_devolucao_estimada LIMIT 1",
             {'id': i.livro_id}
-            ))
+            )
+        res.append(
+            {
+                'idReserva': i.id,
+                'titulo': i.titulo,
+                'data_devolucao_estimada':
+                    ll.data_devolucao_estimada if ll else None
+            }
+        )
     return render_template('minhas-reservas.html', reservas=res)
 
 
@@ -178,8 +209,15 @@ def emprestimos(renovacao, id):
             emp = emp.select("SELECT id, renovacao FROM emprestimo "
                              "where id=%(id)s and usuario_id=%(uid)s",
                              {"id": id, 'uid': current_user.id})
-            emp.renovacao = emp.renovacao + 1
-            emp.update('id', emp.id)
+            emp._op(
+                '''
+                UPDATE emprestimo SET renovacao = renovacao+1,
+                data_devolucao_estimada =
+                DATE_ADD(data_devolucao_estimada, INTERVAL 1 MONTH)
+                WHERE id = %(idE)s
+                ''',
+                {'idE': emp.id}
+            )
             erro = {'msg': "Renovado Com Sucesso!", 'icon': 'success'}
         else:
             erro = {
@@ -189,15 +227,21 @@ def emprestimos(renovacao, id):
                 }
     elif renovacao == 'comprovante' and (id != 0 and id > 0):
         emprest = Emprestimo()
-        e = emprest.select("SELECT ee.id, l.titulo, e.codigo, ee.data_emprestimo "
-                           "FROM emprestimo ee JOIN exemplar e ON ee.exemplar_id=e.id "
+        e = emprest.select("SELECT ee.id, l.titulo, e.codigo, "
+                           "ee.data_emprestimo, d.data_devolucao, d.multa, "
+                           "ee.status "
+                           "FROM emprestimo ee JOIN exemplar e "
+                           "ON ee.exemplar_id=e.id "
+                           "LEFT JOIN devolucao d on ee.id=d.emprestimo_id "
                            "JOIN livro l ON e.livro_id=l.id "
                            "WHERE ee.usuario_id=%(id)s and ee.id=%(ide)s",
                            {'id': current_user.id, 'ide': id})
         return render_template('comprovante.html', dados=e, user=current_user)
     emps = emprestimo.select(
-        "SELECT ee.id, l.titulo, ee.data_devolucao_estimada, renovacao "
+        "SELECT ee.id, l.titulo, ee.data_devolucao_estimada, "
+        "ee.renovacao, ee.status, d.data_devolucao, d.multa "
         "FROM emprestimo ee JOIN exemplar e ON ee.exemplar_id=e.id "
+        "LEFT JOIN devolucao d ON ee.id=d.emprestimo_id "
         "JOIN livro l ON e.livro_id=l.id "
         "WHERE ee.usuario_id=%(id)s",
         {'id': current_user.id},

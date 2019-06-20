@@ -34,6 +34,8 @@
                                         <th>Título do livro</th>
                                         <th>Prazo para entrega</th>
                                         <th>Quant. de renovações</th>
+                                        <th>Devolução</th>
+                                        <th>Multa</th>
                                         <th>Renovar</th>
                                         <th>Comprovante</th>
                                     </tr>
@@ -45,11 +47,27 @@
                                         <td>{{emp.titulo}}</td>
                                         <td>{{emp.data_devolucao_estimada|datetime("%d/%m/%Y")}}</td>
                                         <td>{{emp.renovacao}}/10</td>
+                                        {% if emp.data_devolucao is none%}
+                                        <td>--/--/----</td>
+                                        {% else %}
+                                        <td>{{emp.data_devolucao|datetime("%d/%m/%Y")}}</td>
+                                        {% endif %}
+                                        {% if emp.multa is none%}
+                                        <td>0,00</td>
+                                        {% else %}
+                                        <td>{{emp.multa}}</td>
+                                        {% endif %}
+                                        {% if emp.status == 1%}
+                                        <td>Já Devolvido</td>
+                                        {% else %}
                                         <td>
-                                            <a href="/library/emprestimos/renovacao/{{emp.id}}" class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped" data-position='bottom' data-tooltip='Renovar'>
+                                            <a href="/library/emprestimos/renovacao/{{emp.id}}"
+                                                class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped"
+                                                data-position='bottom' data-tooltip='Renovar'>
                                                 <i class="material-icons">autorenew</i>
                                             </a>
                                         </td>
+                                        {% endif %}
                                         <td>
                                             <a href="/library/emprestimos/comprovante/{{emp.id}}"
                                                 class="waves-effect waves-light btn gradient-45deg-light-blue-cyan z-depth-4 mt-2 tooltipped"
