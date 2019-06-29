@@ -20,18 +20,14 @@ pipenv install --dev
 ### Execute o projeto
 
 ```sh
-export FLASK_APP=app:start_app
-export FLASK_ENV=Development
-export FLASK_DEBUG=True
-
-flask run
-```
-ou
-```sh
-./run.sh
+python main.py
 ```
 
 ## Como rodar os testes
 ```sh
 tox
 ```
+
+## Continuações futuras do projeto
+
+[ ] Terminar Testes Unitarios

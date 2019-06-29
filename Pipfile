@@ -11,17 +11,12 @@ pylint = "*"
 pycodestyle = "*"
 tox = "*"
 ipdb = "*"
-mutpy = "*"
 
 [packages]
 flask = "*"
-flask-restful = "*"
 passlib = "*"
-flask-jwt-extended = "*"
 flask-login = "*"
 flask-WTF = "*"
-requests = "*"
-bs4 = "*"
 flask-mysql = {editable = true,git = "https://github.com/GUIKAR741/flask-mysql.git",ref = "master"}
 
 [requires]

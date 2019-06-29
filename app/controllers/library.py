@@ -21,7 +21,7 @@ library = Blueprint('library', __name__)
 @library.route('/library/')
 @login_required
 def home():
-    """."""
+    """Rota Pagina Inical Apos Logar."""
     total = Livro().select(
         "select count(id) as total from livro"
         ).total
@@ -62,7 +62,7 @@ def home():
 @library.route('/library/acervo/<int:id>')
 @login_required
 def acervo(id):
-    """."""
+    """Pagina com Livros do Acervo."""
     livro = Livro()
     if 'livro' in request.args.keys():
         livros = livro.select(
@@ -103,7 +103,7 @@ def acervo(id):
 @library.route('/library/perfil/', methods=['GET', 'POST'])
 @login_required
 def perfil():
-    """."""
+    """Pagina do Perfil do Usuario."""
     formulario = UserForm()
     if request.method == 'GET':
         formulario.nome.data = current_user.nome
@@ -144,7 +144,7 @@ def perfil():
 @library.route('/library/reservas/<int:id>')
 @login_required
 def reservas(id):
-    """."""
+    """Roda da Pagina das Reservas."""
     r = Reserva()
     if id != 0:
         r.status = 0
@@ -185,7 +185,7 @@ def reservas(id):
 @library.route('/library/emprestimos/<string:renovacao>/<int:id>')
 @login_required
 def emprestimos(renovacao, id):
-    """."""
+    """Rota da Pagina de Emprestimos"""
     emprestimo = Emprestimo()
     erro = 'False'
     if renovacao == 'renovacao' and (id != 0 and id > 0):
@@ -257,7 +257,7 @@ def emprestimos(renovacao, id):
 @library.route('/library/informacoes/<id>/<string:res>')
 @login_required
 def informacoes(id, res):
-    """."""
+    """Rota da Pagina de Informações."""
     if int(id) <= 0:
         return redirect(url_for('library.home'))
     exemplares = Exemplar().select(

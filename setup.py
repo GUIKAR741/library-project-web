@@ -1,6 +1,6 @@
-"""."""
+"""Setup Pacote library-project-web."""
 from setuptools import setup
 
-setup(name='app-flask',
+setup(name='library-project-web',
       packages=['app'],
       zip_safe=False)

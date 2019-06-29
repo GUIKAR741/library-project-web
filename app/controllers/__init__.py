@@ -48,7 +48,7 @@ def senha():
 @index.route('/logout')
 @login_required
 def logout():
-    """."""
+    """Rota para usuario Sair."""
     logout_user()
     return redirect(url_for('index.login'))
 
