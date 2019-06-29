@@ -30,4 +30,4 @@ tox
 
 ## Continuações futuras do projeto
 
-[ ] Terminar Testes Unitarios
+- [ ] Terminar Testes Unitarios
